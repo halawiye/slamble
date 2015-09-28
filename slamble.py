@@ -48,12 +48,22 @@ for i in range(NUM_ROUNDS):
     players.rotate(len(players) - 1 - players.index(loser))
     
 print("number of rounds: ",NUM_ROUNDS)
-print("average round length: ",statistics.mean([x[0] for x in slams])," cards")
+round_lengths = [x[0] for x in slams]
+length_freq = [0 for x in range(max(round_lengths))]
+length_cumfreq = [0 for x in range(max(round_lengths))]
+for l in round_lengths:
+    length_freq[l-1] += 1
+    for i in range(l):
+        length_cumfreq[i] += 1
+print("average round length: ",statistics.mean(round_lengths)," cards")
 print("average number of hands (per person): ",statistics.mean([x[1] for x in slams])," hands")
 slam_values = [x[2].value for x in slams]
 for value in Value:
     freq = slam_values.count(value)
     print(value.name,": ", freq," slams (", float(100*freq/NUM_ROUNDS),"%)")
+    
+for i in range(10):
+    print("probability of slam in round ", i+1,": ",float(length_freq[i]/NUM_ROUNDS))
 
         
 
